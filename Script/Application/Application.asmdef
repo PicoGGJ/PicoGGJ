@@ -1,8 +1,8 @@
-<<<<<<< HEAD
+
 {
 	"name": "Application"
 }
-=======
+
 {
     "name": "Application",
     "rootNamespace": "",
@@ -19,4 +19,4 @@
     "versionDefines": [],
     "noEngineReferences": false
 }
->>>>>>> Movement Rules at domain for directions move
+
