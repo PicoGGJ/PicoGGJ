@@ -10,9 +10,9 @@ namespace Domain.Rules
             switch (Directions)
             {
                 case "left":
-                    return new float[] { 1, 0 };
-                case "right":
                     return new float[] { -1, 0 };
+                case "right":
+                    return new float[] { 1, 0 };
                 case "jump":
                     return new float[] { 0, 1 };
                 default:

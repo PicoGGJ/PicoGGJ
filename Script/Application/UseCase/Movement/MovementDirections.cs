@@ -3,7 +3,7 @@ using Domain.Rules;
 namespace Application.UseCase{
     public class MovementDirections
     {
-        MovementRules Directions { get; }
+        public MovementRules Directions { get; }
 
         public MovementDirections()
         {
