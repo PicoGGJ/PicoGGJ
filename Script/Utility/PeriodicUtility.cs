@@ -4,23 +4,12 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-[System.Serializable]
-public enum TypeAufbau
-{
-    h, k, m, b
-}
-[System.Serializable]
-public class AufbauData
-{
-    public int Amount;
-    public TypeAufbau TypeAufbau;
-}
 public class PeriodicUtility : EditorWindow
 {
     private string symbolElement = "";
     private string elementName = "";
     private int totalElectron = 0;
-    private List<AufbauData> aufbauList = new();
+    readonly private List<AufbauData> aufbauList = new();
     private int length = 0;
 
     [MenuItem("Utility/Periodic Table")]
@@ -53,6 +42,7 @@ public class PeriodicUtility : EditorWindow
 
         EditorGUILayout.BeginVertical();
         EditorGUILayout.LabelField("Aufbau");
+
         for (int i = 0; i <= length; i++)
         {
             aufbauList.Add(new AufbauData());
@@ -62,11 +52,9 @@ public class PeriodicUtility : EditorWindow
             aufbauList[i].TypeAufbau = (TypeAufbau)EditorGUILayout.EnumPopup(aufbauList[i].TypeAufbau);
             EditorGUILayout.EndHorizontal();
         }
+
         EditorGUILayout.BeginHorizontal();
-        if (GUILayout.Button("Add"))
-        {
-            length++;
-        }
+        if (GUILayout.Button("Add")) length++;
         if(GUILayout.Button("Remove"))
         {
             if(length >0)
@@ -93,8 +81,6 @@ public class PeriodicUtility : EditorWindow
         aufbauList.RemoveAll(i => i.Amount <= 0);
 
         GUI.FocusControl(null);
-        EditorGUIUtility.editingTextField = false;
-        GUIUtility.keyboardControl = 0;
 
         if (string.IsNullOrEmpty(symbolElement) ||
             string.IsNullOrEmpty(elementName) ||
@@ -112,20 +98,21 @@ public class PeriodicUtility : EditorWindow
 
         PeriodicDatabase database;
 
-        if (System.IO.File.Exists(filePath))
+        if (File.Exists(filePath))
         {
-            string json = System.IO.File.ReadAllText(filePath);
+            string json = File.ReadAllText(filePath);
             database = JsonUtility.FromJson<PeriodicDatabase>(json);
 
             if (database == null || database.Periodic == null)
                 database = new PeriodicDatabase();
         }
+
         else
         {
             database = new PeriodicDatabase();
         }
 
-        PeriodicData newData = new PeriodicData
+        PeriodicData newData = new()
         {
             symbolElement = symbolElement,
             elementName = elementName,
@@ -147,7 +134,7 @@ public class PeriodicUtility : EditorWindow
         }
 
         string outputJson = JsonUtility.ToJson(database, true);
-        System.IO.File.WriteAllText(filePath, outputJson);
+        File.WriteAllText(filePath, outputJson);
         AssetDatabase.Refresh();
 
         ResetView();
@@ -169,7 +156,20 @@ public class PeriodicUtility : EditorWindow
 
 }
 
-[System.Serializable]
+[Serializable]
+public enum TypeAufbau
+{
+    h, k, m, b
+}
+
+[Serializable]
+public class AufbauData
+{
+    public int Amount;
+    public TypeAufbau TypeAufbau;
+}
+
+[Serializable]
 public class PeriodicData
 {
     public string symbolElement;
@@ -179,9 +179,9 @@ public class PeriodicData
 
 }
 
-[System.Serializable]
+[Serializable]
 public class PeriodicDatabase
 {
-    public List<PeriodicData> Periodic = new List<PeriodicData>();
+    public List<PeriodicData> Periodic = new();
 }
 
